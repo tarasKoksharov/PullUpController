@@ -285,9 +285,7 @@ open class PullUpController: UIViewController {
         guard
             let parentView = parent?.view
             else { return }
-        
-        view.backgroundColor = .red
-        
+                
         topConstraint = view.topAnchor.constraint(equalTo: parentView.safeAreaLayoutGuide.topAnchor)
         leftConstraint = view.leftAnchor.constraint(equalTo: parentView.safeAreaLayoutGuide.leftAnchor)
         rightConstraint = view.rightAnchor.constraint(equalTo: parentView.safeAreaLayoutGuide.rightAnchor)
@@ -463,24 +461,21 @@ open class PullUpController: UIViewController {
     private func setLandscapeConstraints() {
         
         guard
-            let topConstraint = topConstraint,
-            let parentHeight = parentHeight,
             let parentWidth = parentWidth
             else { return }
         
-        var targetTopOffset: CGFloat = 0
+        var newContentHeight: CGFloat = 0
         
         if portraitPreviousStickyPointIndex == 0 {
             guard let firstStickyPoint = pullUpControllerAllStickyPoints.first else {return}
-            targetTopOffset = firstStickyPoint
+            newContentHeight = firstStickyPoint
         } else {
             guard let lastStickyPoint = pullUpControllerAllStickyPoints.last else {return}
-            targetTopOffset = lastStickyPoint
+            newContentHeight = lastStickyPoint
         }
         
-        topConstraint.constant = parentHeight - targetTopOffset
-        
         rightConstraint?.constant = -max(parentWidth/2, parentWidth - 300)
+        pullUpControllerMoveToVisiblePoint(newContentHeight, animated: false, completion: nil)
     }
     
     fileprivate func hide() {
