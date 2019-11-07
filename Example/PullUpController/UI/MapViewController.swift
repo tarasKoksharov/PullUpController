@@ -47,11 +47,16 @@ class MapViewController: UIViewController {
     }
 
     private func addPullUpController(animated: Bool) {
-        let pullUpController = makeSearchViewControllerIfNeeded()
-        _ = pullUpController.view // call pullUpController.viewDidLoad()
-        addPullUpController(pullUpController,
-                            initialStickyPointOffset: pullUpController.initialPointOffset,
-                            animated: animated)
+        
+        DispatchQueue.main.async {[weak self] in
+            guard let `self` = self else { return }
+            let pullUpController = self.makeSearchViewControllerIfNeeded()
+            _ = pullUpController.view // call pullUpController.viewDidLoad()
+            self.addPullUpController(pullUpController,
+                                initialStickyPointOffset: pullUpController.initialPointOffset,
+                                animated: animated)
+        }
+        
     }
 
     func zoom(to location: CLLocationCoordinate2D) {

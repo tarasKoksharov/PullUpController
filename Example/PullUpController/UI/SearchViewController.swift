@@ -53,7 +53,10 @@ class SearchViewController: PullUpController {
         
         portraitSize = CGSize(width: min(UIScreen.main.bounds.width, UIScreen.main.bounds.height),
                               height: secondPreviewView.frame.maxY)
-        landscapeFrame = CGRect(x: 5, y: 50, width: 280, height: 300)
+        
+        let weight = view.frame.width
+        let heightContent = weight - 20
+        landscapeFrame = CGRect(x: 10, y: 10, width: 280, height: heightContent)
         
         tableView.attach(to: self)
         setupDataSource()
