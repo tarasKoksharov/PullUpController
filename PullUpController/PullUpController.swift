@@ -43,6 +43,10 @@ open class PullUpController: UIViewController {
         return CGRect(x: 10, y: 10, width: 300, height: UIScreen.main.bounds.height - 20)
     }
     
+    open var pullUpControllerPreferredLandscapeEdge: UIEdgeInsets {
+        return UIEdgeInsets(top: 0, left: 10, bottom: 0, right: 0)
+    }
+    
     /**
      A list of y values, in screen units expressed in the pull up controller coordinate system.
      At the end of the gestures the pull up controller will scroll to the nearest point in the list.
@@ -70,7 +74,7 @@ open class PullUpController: UIViewController {
      */
     open var pullUpControllerCurrentPointOffset: CGFloat {
         guard
-            let parentViewHeight = parent?.view.frame.height
+            let parentViewHeight = parentHeight
             else { return 0 }
         return parentViewHeight - (topConstraint?.constant ?? 0)
     }
@@ -90,16 +94,20 @@ open class PullUpController: UIViewController {
      At the end of the gesture the pull up controller will scroll at the nearest point in the list.
      */
     public final var pullUpControllerAllStickyPoints: [CGFloat] {
-        var sc_allStickyPoints = [initialStickyPointOffset, pullUpControllerPreferredSize.height].compactMap { $0 }
-        sc_allStickyPoints.append(contentsOf: pullUpControllerMiddleStickyPoints)
-        return sc_allStickyPoints.sorted()
+        if isPortrait {
+            var sc_allStickyPoints = [initialStickyPointOffset, pullUpControllerPreferredSize.height].compactMap { $0 }
+            sc_allStickyPoints.append(contentsOf: pullUpControllerMiddleStickyPoints)
+            return sc_allStickyPoints.sorted()
+        } else {
+            let sc_allStickyPoints = [pullUpControllerMiddleStickyPoints.first, (parentHeight ?? 0) - 20].compactMap { $0 }
+            return sc_allStickyPoints.sorted()
+        }
     }
     
     private var leftConstraint: NSLayoutConstraint?
+    private var rightConstraint: NSLayoutConstraint?
     private var topConstraint: NSLayoutConstraint?
     private var bottomConstraint: NSLayoutConstraint?
-    private var widthConstraint: NSLayoutConstraint?
-    private var heightConstraint: NSLayoutConstraint?
     private var panGestureRecognizer: UIPanGestureRecognizer?
     
     private var isPortrait: Bool {
@@ -113,10 +121,22 @@ open class PullUpController: UIViewController {
     private var initialInternalScrollViewContentOffset: CGPoint = .zero
     private var initialStickyPointOffset: CGFloat?
     private var currentStickyPointIndex: Int {
-        let stickyPointTreshold = (self.parent?.view.frame.height ?? 0) - (topConstraint?.constant ?? 0)
+        let stickyPointTreshold = (parentHeight ?? 0) - (topConstraint?.constant ?? 0)
         let stickyPointsLessCurrentPosition = pullUpControllerAllStickyPoints.map { abs($0 - stickyPointTreshold) }
         guard let minStickyPointDifference = stickyPointsLessCurrentPosition.min() else { return 0 }
         return stickyPointsLessCurrentPosition.firstIndex(of: minStickyPointDifference) ?? 0
+    }
+    
+    private var parentHeight: CGFloat? {
+        guard let parentView = self.parent?.view else {return nil}
+        let height = parentView.frame.height - (parentView.safeAreaInsets.top + parentView.safeAreaInsets.bottom)
+        return height
+    }
+    
+    private var parentWidth: CGFloat? {
+        guard let parentView = self.parent?.view else {return nil}
+        let height = parentView.frame.width - (parentView.safeAreaInsets.left + parentView.safeAreaInsets.right)
+        return height
     }
     
     // MARK: - Open methods
@@ -152,8 +172,7 @@ open class PullUpController: UIViewController {
      */
     open func pullUpControllerMoveToVisiblePoint(_ visiblePoint: CGFloat, animated: Bool, completion: (() -> Void)?) {
         guard
-            isPortrait,
-            let parentViewHeight = parent?.view.frame.height
+            let parentViewHeight = parentHeight
             else { return }
         topConstraint?.constant = parentViewHeight - visiblePoint
         pullUpControllerWillMove(to: visiblePoint)
@@ -241,7 +260,7 @@ open class PullUpController: UIViewController {
         setupPanGestureRecognizer()
         setupConstraints()
         refreshConstraints(newSize: superview.frame.size,
-                           customTopOffset: superview.frame.height - initialStickyPointOffset)
+                           customTopOffset: (parentHeight ?? 0) - initialStickyPointOffset)
     }
     
     fileprivate func addInternalScrollViewPanGesture() {
@@ -267,24 +286,23 @@ open class PullUpController: UIViewController {
             let parentView = parent?.view
             else { return }
         
-        topConstraint = view.topAnchor.constraint(equalTo: parentView.topAnchor)
-        leftConstraint = view.leftAnchor.constraint(equalTo: parentView.leftAnchor)
-        widthConstraint = view.widthAnchor.constraint(equalToConstant: pullUpControllerPreferredSize.width)
-        heightConstraint = view.heightAnchor.constraint(equalToConstant: pullUpControllerPreferredSize.height)
-        heightConstraint?.priority = .defaultLow
-        bottomConstraint = parentView.bottomAnchor.constraint(equalTo: parentView.safeAreaLayoutGuide.bottomAnchor)
+        view.backgroundColor = .red
+        
+        topConstraint = view.topAnchor.constraint(equalTo: parentView.safeAreaLayoutGuide.topAnchor)
+        leftConstraint = view.leftAnchor.constraint(equalTo: parentView.safeAreaLayoutGuide.leftAnchor)
+        rightConstraint = view.rightAnchor.constraint(equalTo: parentView.safeAreaLayoutGuide.rightAnchor)
+        bottomConstraint = view.bottomAnchor.constraint(equalTo: parentView.safeAreaLayoutGuide.bottomAnchor)
 
         
         let constraintsToActivate = [topConstraint,
                                      leftConstraint,
-                                     widthConstraint,
-                                     heightConstraint,
+                                     rightConstraint,
                                      bottomConstraint].compactMap { $0 }
         NSLayoutConstraint.activate(constraintsToActivate)
     }
     
     private func refreshConstraints(newSize: CGSize, customTopOffset: CGFloat? = nil) {
-        if newSize.height > newSize.width {
+        if isPortrait {
             setPortraitConstraints(parentViewSize: newSize, customTopOffset: customTopOffset)
         } else {
             setLandscapeConstraints()
@@ -301,12 +319,11 @@ open class PullUpController: UIViewController {
             }
         }
         
-        return (parent?.view.frame.height ?? 0) - pullUpControllerAllStickyPoints[currentStickyPointIndex]
+        return (parentHeight ?? 0) - pullUpControllerAllStickyPoints[currentStickyPointIndex]
     }
     
     @objc private func handleScrollViewGestureRecognizer(_ gestureRecognizer: UIPanGestureRecognizer) {
         guard
-            isPortrait,
             let scrollView = internalScrollView,
             let topConstraint = topConstraint,
             let lastStickyPoint = pullUpControllerAllStickyPoints.last,
@@ -360,7 +377,6 @@ open class PullUpController: UIViewController {
     
     @objc private func handlePanGestureRecognizer(_ gestureRecognizer: UIPanGestureRecognizer) {
         guard
-            isPortrait,
             let topConstraint = topConstraint
             else { return }
         
@@ -381,7 +397,6 @@ open class PullUpController: UIViewController {
     
     private func goToNearestStickyPoint(verticalVelocity: CGFloat) {
         guard
-            isPortrait,
             let topConstraint = topConstraint
             else { return }
         let targetTopOffset = nearestStickyPointY(yVelocity: verticalVelocity)  // v = px/s
@@ -394,7 +409,7 @@ open class PullUpController: UIViewController {
                               animationDuration: TimeInterval? = nil,
                               allowBounce: Bool = false) {
         guard
-            let parentViewHeight = parent?.view.frame.height
+            let parentViewHeight = parentHeight
             else { return }
         // Apply right value bounding for the provided bounce offset if needed
         let value: CGFloat = {
@@ -440,29 +455,37 @@ open class PullUpController: UIViewController {
         } else {
             topConstraint?.constant = nearestStickyPointY(yVelocity: 0)
         }
-        leftConstraint?.constant = (parentViewSize.width - min(pullUpControllerPreferredSize.width, parentViewSize.width))/2
-        widthConstraint?.constant = pullUpControllerPreferredSize.width
-        heightConstraint?.constant = pullUpControllerPreferredSize.height
-        heightConstraint?.priority = .defaultLow
+        leftConstraint?.constant = 0
+        rightConstraint?.constant = 0
         bottomConstraint?.constant = 0
     }
     
     private func setLandscapeConstraints() {
+        
         guard
-            let parentViewHeight = parent?.view.frame.height
+            let topConstraint = topConstraint,
+            let parentHeight = parentHeight,
+            let parentWidth = parentWidth
             else { return }
-        let landscapeFrame = pullUpControllerPreferredLandscapeFrame
-        topConstraint?.constant = landscapeFrame.origin.y
-        leftConstraint?.constant = landscapeFrame.origin.x
-        widthConstraint?.constant = landscapeFrame.width
-        heightConstraint?.constant = landscapeFrame.height
-        heightConstraint?.priority = .defaultHigh
-        bottomConstraint?.constant = parentViewHeight - landscapeFrame.height - landscapeFrame.origin.y
+        
+        var targetTopOffset: CGFloat = 0
+        
+        if portraitPreviousStickyPointIndex == 0 {
+            guard let firstStickyPoint = pullUpControllerAllStickyPoints.first else {return}
+            targetTopOffset = firstStickyPoint
+        } else {
+            guard let lastStickyPoint = pullUpControllerAllStickyPoints.last else {return}
+            targetTopOffset = lastStickyPoint
+        }
+        
+        topConstraint.constant = parentHeight - targetTopOffset
+        
+        rightConstraint?.constant = -max(parentWidth/2, parentWidth - 300)
     }
     
     fileprivate func hide() {
         guard
-            let parentViewHeight = parent?.view.frame.height
+            let parentViewHeight = parentHeight
             else { return }
         topConstraint?.constant = parentViewHeight
     }
