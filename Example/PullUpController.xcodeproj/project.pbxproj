@@ -14,6 +14,14 @@
 		AC44912520DBFFBE00F98838 /* SearchResultCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC44911E20DBFFBE00F98838 /* SearchResultCell.swift */; };
 		AC44912620DBFFBE00F98838 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = AC44911F20DBFFBE00F98838 /* Main.storyboard */; };
 		AC44912720DBFFBE00F98838 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = AC44912020DBFFBE00F98838 /* Assets.xcassets */; };
+		CACEABE4237ECF52009B0466 /* DirectionsViewContoller.xib in Resources */ = {isa = PBXBuildFile; fileRef = CACEABDE237ECF52009B0466 /* DirectionsViewContoller.xib */; };
+		CACEABE5237ECF52009B0466 /* DirectionsPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = CACEABDF237ECF52009B0466 /* DirectionsPresenter.swift */; };
+		CACEABE6237ECF52009B0466 /* DirectionsViewContoller.swift in Sources */ = {isa = PBXBuildFile; fileRef = CACEABE0237ECF52009B0466 /* DirectionsViewContoller.swift */; };
+		CACEABE7237ECF52009B0466 /* DirectionsRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = CACEABE1237ECF52009B0466 /* DirectionsRouter.swift */; };
+		CACEABE8237ECF52009B0466 /* DirectionsConfigurator.swift in Sources */ = {isa = PBXBuildFile; fileRef = CACEABE2237ECF52009B0466 /* DirectionsConfigurator.swift */; };
+		CACEABE9237ECF52009B0466 /* DirectionsModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = CACEABE3237ECF52009B0466 /* DirectionsModels.swift */; };
+		CACEABEB237ED0BA009B0466 /* DestinationRootPullUpViewContoller.swift in Sources */ = {isa = PBXBuildFile; fileRef = CACEABEA237ED0BA009B0466 /* DestinationRootPullUpViewContoller.swift */; };
+		CACEABED237ED118009B0466 /* Dictionary+.swift in Sources */ = {isa = PBXBuildFile; fileRef = CACEABEC237ED118009B0466 /* Dictionary+.swift */; };
 		E969182522AF18CFABF54185 /* Pods_PullUpController_Example.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BFA23D4840D57C4607249C0D /* Pods_PullUpController_Example.framework */; };
 /* End PBXBuildFile section */
 
@@ -34,6 +42,14 @@
 		AC44911F20DBFFBE00F98838 /* Main.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Main.storyboard; sourceTree = "<group>"; };
 		AC44912020DBFFBE00F98838 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		BFA23D4840D57C4607249C0D /* Pods_PullUpController_Example.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_PullUpController_Example.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		CACEABDE237ECF52009B0466 /* DirectionsViewContoller.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = DirectionsViewContoller.xib; sourceTree = "<group>"; };
+		CACEABDF237ECF52009B0466 /* DirectionsPresenter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DirectionsPresenter.swift; sourceTree = "<group>"; };
+		CACEABE0237ECF52009B0466 /* DirectionsViewContoller.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DirectionsViewContoller.swift; sourceTree = "<group>"; };
+		CACEABE1237ECF52009B0466 /* DirectionsRouter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DirectionsRouter.swift; sourceTree = "<group>"; };
+		CACEABE2237ECF52009B0466 /* DirectionsConfigurator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DirectionsConfigurator.swift; sourceTree = "<group>"; };
+		CACEABE3237ECF52009B0466 /* DirectionsModels.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DirectionsModels.swift; sourceTree = "<group>"; };
+		CACEABEA237ED0BA009B0466 /* DestinationRootPullUpViewContoller.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DestinationRootPullUpViewContoller.swift; sourceTree = "<group>"; };
+		CACEABEC237ED118009B0466 /* Dictionary+.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Dictionary+.swift"; sourceTree = "<group>"; };
 		F59F16287664980C2DF5643A /* Pods-PullUpController_Tests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PullUpController_Tests.release.xcconfig"; path = "Pods/Target Support Files/Pods-PullUpController_Tests/Pods-PullUpController_Tests.release.xcconfig"; sourceTree = "<group>"; };
 		F97967A110801D095B7F4727 /* README.md */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = net.daringfireball.markdown; name = README.md; path = ../README.md; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -127,8 +143,24 @@
 				AC44911D20DBFFBE00F98838 /* MapViewController.swift */,
 				AC44911E20DBFFBE00F98838 /* SearchResultCell.swift */,
 				AC44911C20DBFFBE00F98838 /* SearchViewController.swift */,
+				CACEABDD237ECF52009B0466 /* DirectionsViewContoller */,
 			);
 			path = UI;
+			sourceTree = "<group>";
+		};
+		CACEABDD237ECF52009B0466 /* DirectionsViewContoller */ = {
+			isa = PBXGroup;
+			children = (
+				CACEABEC237ED118009B0466 /* Dictionary+.swift */,
+				CACEABEA237ED0BA009B0466 /* DestinationRootPullUpViewContoller.swift */,
+				CACEABDE237ECF52009B0466 /* DirectionsViewContoller.xib */,
+				CACEABDF237ECF52009B0466 /* DirectionsPresenter.swift */,
+				CACEABE0237ECF52009B0466 /* DirectionsViewContoller.swift */,
+				CACEABE1237ECF52009B0466 /* DirectionsRouter.swift */,
+				CACEABE2237ECF52009B0466 /* DirectionsConfigurator.swift */,
+				CACEABE3237ECF52009B0466 /* DirectionsModels.swift */,
+			);
+			path = DirectionsViewContoller;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -194,6 +226,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				AC44912620DBFFBE00F98838 /* Main.storyboard in Resources */,
+				CACEABE4237ECF52009B0466 /* DirectionsViewContoller.xib in Resources */,
 				AC44912720DBFFBE00F98838 /* Assets.xcassets in Resources */,
 				AC44912120DBFFBE00F98838 /* LaunchScreen.storyboard in Resources */,
 			);
@@ -245,10 +278,17 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CACEABE5237ECF52009B0466 /* DirectionsPresenter.swift in Sources */,
 				AC44912320DBFFBE00F98838 /* SearchViewController.swift in Sources */,
 				AC44912420DBFFBE00F98838 /* MapViewController.swift in Sources */,
 				AC44912520DBFFBE00F98838 /* SearchResultCell.swift in Sources */,
+				CACEABED237ED118009B0466 /* Dictionary+.swift in Sources */,
 				607FACD61AFB9204008FA782 /* AppDelegate.swift in Sources */,
+				CACEABE6237ECF52009B0466 /* DirectionsViewContoller.swift in Sources */,
+				CACEABE9237ECF52009B0466 /* DirectionsModels.swift in Sources */,
+				CACEABE8237ECF52009B0466 /* DirectionsConfigurator.swift in Sources */,
+				CACEABEB237ED0BA009B0466 /* DestinationRootPullUpViewContoller.swift in Sources */,
+				CACEABE7237ECF52009B0466 /* DirectionsRouter.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

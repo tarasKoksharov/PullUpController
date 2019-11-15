@@ -95,7 +95,7 @@ open class PullUpController: UIViewController {
      */
     public final var pullUpControllerAllStickyPoints: [CGFloat] {
         if isPortrait {
-            var sc_allStickyPoints = [initialStickyPointOffset, pullUpControllerPreferredSize.height].compactMap { $0 }
+            var sc_allStickyPoints = [pullUpControllerPreferredSize.height].compactMap { $0 }
             sc_allStickyPoints.append(contentsOf: pullUpControllerMiddleStickyPoints)
             return sc_allStickyPoints.sorted()
         } else {

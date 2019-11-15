@@ -24,21 +24,35 @@ class MapViewController: UIViewController {
     @IBOutlet weak var animateShowSwitch: UISwitch!
     @IBOutlet weak var animateHideSwitch: UISwitch!
     
-    private func makeSearchViewControllerIfNeeded() -> SearchViewController {
-        let currentPullUpController = children
-            .filter({ $0 is SearchViewController })
-            .first as? SearchViewController
-        let pullUpController: SearchViewController = currentPullUpController ?? UIStoryboard(name: "Main",bundle: nil).instantiateViewController(withIdentifier: "SearchViewController") as! SearchViewController
-        if initialStateSegmentedControl.selectedSegmentIndex == 0 {
-            pullUpController.initialState = .contracted
-        } else {
-            pullUpController.initialState = .expanded
+    weak var test: DirectionsViewContoller?
+    
+    private func makeSearchViewControllerIfNeeded() -> DirectionsViewContoller {
+        
+        guard let vc = test else {
+             let directionsViewContoller = DirectionsViewContoller()
+             
+             let configurator = DirectionsConfigurator()
+             directionsViewContoller.setup(configurator: configurator)
+            
+            return directionsViewContoller
         }
-        if originalPullUpControllerViewSize == .zero {
-            originalPullUpControllerViewSize = pullUpController.view.bounds.size
-        }
-
-        return pullUpController
+        
+        return vc
+        
+//        let currentPullUpController = children
+//            .filter({ $0 is SearchViewController })
+//            .first as? SearchViewController
+//        let pullUpController: SearchViewController = currentPullUpController ?? UIStoryboard(name: "Main",bundle: nil).instantiateViewController(withIdentifier: "SearchViewController") as! SearchViewController
+//        if initialStateSegmentedControl.selectedSegmentIndex == 0 {
+//            pullUpController.initialState = .contracted
+//        } else {
+//            pullUpController.initialState = .expanded
+//        }
+//        if originalPullUpControllerViewSize == .zero {
+//            originalPullUpControllerViewSize = pullUpController.view.bounds.size
+//        }
+//
+//        return pullUpController
     }
 
     override func viewDidLoad() {
@@ -79,14 +93,14 @@ class MapViewController: UIViewController {
     }
 
     @IBAction private func widthSliderValueChanged(_ sender: UISlider) {
-        let pullUpController = makeSearchViewControllerIfNeeded()
-        let width = originalPullUpControllerViewSize.width * CGFloat(sender.value)
-        pullUpController.portraitSize = CGSize(width: width,
-                                               height: pullUpController.portraitSize.height)
-        pullUpController.landscapeFrame = CGRect(origin: pullUpController.landscapeFrame.origin,
-                                                 size: CGSize(width: width,
-                                                              height: pullUpController.landscapeFrame.height))
-        pullUpController.updatePreferredFrameIfNeeded(animated: true)
+//        let pullUpController = makeSearchViewControllerIfNeeded()
+//        let width = originalPullUpControllerViewSize.width * CGFloat(sender.value)
+//        pullUpController.portraitSize = CGSize(width: width,
+//                                               height: pullUpController.portraitSize.height)
+//        pullUpController.landscapeFrame = CGRect(origin: pullUpController.landscapeFrame.origin,
+//                                                 size: CGSize(width: width,
+//                                                              height: pullUpController.landscapeFrame.height))
+//        pullUpController.updatePreferredFrameIfNeeded(animated: true)
     }
 
 }
