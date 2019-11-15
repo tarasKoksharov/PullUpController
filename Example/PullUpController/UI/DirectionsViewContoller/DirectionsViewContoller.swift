@@ -97,21 +97,13 @@ class DirectionsViewContoller: DestinationRootPullUpViewContoller, DirectionsDis
         return CGRect(x: 5, y: 50, width: 280, height: 300)
     }
     
-    private var positionToHeight: [DestinationPullUpPosition: CGFloat] {
-        
-        print("tka vBodyContent.frame.height \(vBodyContent.frame.height)")
-        
-        guard let parent = parent else {return [:]}
-        return [
+    override func updateMapPositionToHeight() {
+         guard let parent = parent else {return}
+        mapPositionToHeight = [
             .top: parent.view.frame.height - (parent.view.safeAreaInsets.top + parent.view.safeAreaInsets.bottom + 20),
             .middle: 66 + vBodyContent.frame.height,
             .bottom: 66
         ]
-    }
-    
-    override var mapPositionToHeight: [DestinationPullUpPosition: CGFloat] {
-//        print("tka positionToHeight \(positionToHeight)")
-        return positionToHeight
     }
     
     // MARK: - PullUpController
@@ -137,6 +129,10 @@ class DirectionsViewContoller: DestinationRootPullUpViewContoller, DirectionsDis
             self.activity.isHidden = true
             
             self.view.layoutIfNeeded()
+            
+            self.updateMapPositionToHeight()
+            
+            self.scrollTo(position: .middle)
         }
     }
     

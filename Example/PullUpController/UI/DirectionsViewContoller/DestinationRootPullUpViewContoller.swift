@@ -21,6 +21,14 @@ class DestinationRootPullUpViewContoller: PullUpController {
     var _position: DestinationPullUpPosition = .bottom
     var _isInteractable: Bool = true
         
+    // MARK: - Main
+
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        
+        updateMapPositionToHeight()
+    }
+    
     // MARK: - Private funcs
     
     var _portraitSize: CGSize {
@@ -31,8 +39,10 @@ class DestinationRootPullUpViewContoller: PullUpController {
         return CGRect(x: 5, y: 50, width: 280, height: 300)
     }
     
-    var mapPositionToHeight: [DestinationPullUpPosition: CGFloat] {
-        return [:]
+    var mapPositionToHeight: [DestinationPullUpPosition: CGFloat]  = [:]
+    
+    func updateMapPositionToHeight() {
+        
     }
     
     func contentHeightFor(position: DestinationPullUpPosition) -> CGFloat {

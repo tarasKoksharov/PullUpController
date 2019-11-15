@@ -174,7 +174,9 @@ open class PullUpController: UIViewController {
         guard
             let parentViewHeight = parentHeight
             else { return }
+        
         topConstraint?.constant = parentViewHeight - visiblePoint
+                
         pullUpControllerWillMove(to: visiblePoint)
         pullUpControllerAnimate(
             action: .move,
@@ -241,9 +243,9 @@ open class PullUpController: UIViewController {
         
         coordinator.animate(alongsideTransition: { [weak self] coordinator in
             self?.refreshConstraints(newSize: size)
-            if let targetStickyPoint = targetStickyPoint {
-                self?.pullUpControllerMoveToVisiblePoint(targetStickyPoint, animated: true, completion: nil)
-            }
+//            if let targetStickyPoint = targetStickyPoint {
+//                self?.pullUpControllerMoveToVisiblePoint(targetStickyPoint, animated: true, completion: nil)
+//            }
         })
     }
     
@@ -429,6 +431,7 @@ open class PullUpController: UIViewController {
          */
         let shouldNotifyObserver = animationDuration != nil
         topConstraint?.constant = value
+
         pullUpControllerDidDrag(to: targetPoint)
         if shouldNotifyObserver {
             pullUpControllerWillMove(to: targetPoint)
@@ -453,6 +456,7 @@ open class PullUpController: UIViewController {
         } else {
             topConstraint?.constant = nearestStickyPointY(yVelocity: 0)
         }
+        
         leftConstraint?.constant = 0
         rightConstraint?.constant = 0
         bottomConstraint?.constant = 0
