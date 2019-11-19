@@ -451,6 +451,7 @@ open class PullUpController: UIViewController {
     }
     
     private func setPortraitConstraints(parentViewSize: CGSize, customTopOffset: CGFloat? = nil) {
+                
         if let customTopOffset = customTopOffset {
             topConstraint?.constant = customTopOffset
         } else {
@@ -460,6 +461,19 @@ open class PullUpController: UIViewController {
         leftConstraint?.constant = 0
         rightConstraint?.constant = 0
         bottomConstraint?.constant = 0
+                        
+        let visiblePoint = (parentHeight ?? 0) - (topConstraint?.constant ?? 0)
+        
+        pullUpControllerWillMove(to: visiblePoint)
+        pullUpControllerAnimate(
+            action: .move,
+            withDuration: 0.3,
+            animations: { [weak self] in
+                self?.parent?.view?.layoutIfNeeded()
+            },
+            completion: { [weak self] _ in
+                self?.pullUpControllerDidMove(to: visiblePoint)
+        })
     }
     
     private func setLandscapeConstraints() {

@@ -112,6 +112,12 @@ class DirectionsViewContoller: DestinationRootPullUpViewContoller, DirectionsDis
         return [contentHeightFor(position: .bottom), contentHeightFor(position: .middle)]
     }
     
+    override func pullUpControllerDidMove(to point: CGFloat) {
+        super.pullUpControllerDidMove(to: point)
+        
+        print("tka frame \(self.view.frame) \(point)")
+    }
+    
     // MARK: - Logic
     
     func display(viewModel: DirectionsModels.ViewModel) {
