@@ -87,6 +87,10 @@ open class PullUpController: UIViewController {
         return 700
     }
     
+	open var viewForInteract: UIView {
+		return self.view
+	}
+	
     // MARK: - Public properties
     
     /**
@@ -279,7 +283,7 @@ open class PullUpController: UIViewController {
         panGestureRecognizer?.minimumNumberOfTouches = 1
         panGestureRecognizer?.maximumNumberOfTouches = 1
         if let panGestureRecognizer = panGestureRecognizer {
-            view.addGestureRecognizer(panGestureRecognizer)
+            viewForInteract.addGestureRecognizer(panGestureRecognizer)
         }
     }
     

@@ -40,7 +40,11 @@ class DirectionsViewContoller: DestinationRootPullUpViewContoller, DirectionsDis
     override var initialPointOffset: CGFloat {
         return 126//vBody.frame.height
     }
-    
+    	
+	override var viewForInteract: UIView {
+		return self.titleContainerView
+	}
+	
     // MARK: - Private Properties
     
     private var _presenter: DirectionsPresenterProtocol!
@@ -113,9 +117,7 @@ class DirectionsViewContoller: DestinationRootPullUpViewContoller, DirectionsDis
     }
     
     override func pullUpControllerDidMove(to point: CGFloat) {
-        super.pullUpControllerDidMove(to: point)
-        
-        print("tka frame \(self.view.frame) \(point)")
+        super.pullUpControllerDidMove(to: point)        
     }
     
     // MARK: - Logic
